@@ -1,14 +1,12 @@
 import numpy as np
 import cv2
 from numpy import*
-import os
 # Capture video from file
 b = cv2.VideoCapture('videoplayback.mp4')
 f = cv2.VideoCapture('a.mp4')
 upper_green = [40, 100, 100]
 lower_green = [80, 255, 255]
-frames_array = []
-count = 0
+
 g = lambda fground,bground : copyto(fground,bground,'no',fground>=[155, 186, 83])
 while True:
 
@@ -18,33 +16,24 @@ while True:
 	frame_bg = cv2.resize(frame_bg, (500, 350)) 
 	frame_fg = cv2.medianBlur(frame_fg,5)
 	if ret_bg == True:
+
+
 		frame_bg = np.array(frame_bg) # convert to numpy array
 		frame_fg = np.array(frame_fg) # convert to numpy array
-		# cv2.imshow('before',frame_fg)
-		rows,cols,channels = frame_fg.shape
-		for i in range(rows):
-			for j in range(cols):
-				if frame_fg[i,j][1] <= 255 and frame_fg[i,j][1] >= 200:
-					# print(frame_fg[i,j])
-					frame_fg[i,j][0] = frame_bg[i,j][0]
-					frame_fg[i,j][1] = frame_bg[i,j][1]
-					frame_fg[i,j][2] = frame_bg[i,j][2]
+		cv2.imshow('before',frame_fg)
 
-		# # # for i in range(0:)
-		# g(frame_fg, frame_bg)
+		# # for i in range(0:)
+		g(frame_fg, frame_bg)
 		cv2.imshow('frame_fg',frame_fg)
-		cv2.imwrite('./pics/{}.png'.format(count), frame_fg)
-		# cv2.imshow('frame_bg',frame_bg)
+		cv2.imshow('frame_bg',frame_bg)
 		# cv2.imshow('bck', frame_bg)
 		#print(frame[1,1])
-		count = count + 1
+
 		if cv2.waitKey(30) & 0xFF == ord('q'):
 			break
 
 	else:
 		break
 
-# while True:
-# 	cv2.imshow('frame_fg',frames_array)
 b.release()
 cv2.destroyAllWindows()
