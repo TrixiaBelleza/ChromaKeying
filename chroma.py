@@ -10,6 +10,15 @@ b = cv2.VideoCapture("./background/" + background + '.mp4')
 
 
 
+font                   = cv2.FONT_HERSHEY_SIMPLEX
+bottomLeftCornerOfText = (10,500)
+fontScale              = 1
+fontColor              = (0,0,255)
+lineType               = 2
+flag                   = 0
+
+
+
 width = int(b.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(b.get(cv2.CAP_PROP_FRAME_HEIGHT))
 dimension = (width,height)
@@ -38,8 +47,18 @@ while(cap.isOpened()):
   res = frame - green
   res = cv2.add(green2,res)
   cv2.imshow("Sample",res)
-  
+
   out.write(res) # write frame to file
+
+  if (flag == 0):
+    cv2.putText(res,'Lower Green: {} Higher Green: {}'.format(lower_green,upper_green), 
+      bottomLeftCornerOfText, 
+      font, 
+      fontScale,
+      fontColor,
+      lineType)
+    cv2.imwrite("./green_array/foreground{}.jpg".format(foreground), res)
+    flag +=1
 
   # Continue to show live feed unless "Esc" key is pressed
   key = cv2.waitKey(20)
