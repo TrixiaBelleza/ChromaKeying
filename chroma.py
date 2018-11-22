@@ -2,7 +2,7 @@ import cv2
 import numpy as np 
 
 background = "bg"
-foreground = "tisha-3-eyes"
+foreground = "joma-old-glasses"
 
 
 cap = cv2.VideoCapture("./foreground/" + foreground + '.mp4')
@@ -34,15 +34,16 @@ while(cap.isOpened()):
   ret2, frame2 = b.read()
 
   #Adjust niu to
-  lower_green = np.array([50,60,60])
-  upper_green = np.array([100,255,255])
+  #
+  lower_green = np.array([40,60,60])
+  upper_green = np.array([75,255,255])
 
   hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) # convert input to gray scale
   mask = cv2.inRange(hsv, lower_green, upper_green)
 
-  frame2 = cv2.resize(frame2, (width, height))
 
   green = cv2.bitwise_and(frame,frame, mask = mask)
+
   green2 = cv2.bitwise_and(frame2,frame2, mask = mask)
   res = frame - green
   res = cv2.add(green2,res)
