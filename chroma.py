@@ -1,14 +1,12 @@
 import cv2
 import numpy as np 
 
-background = "bg"
-foreground = "joma-old-glasses"
 
+background = "trix_turn_around_long"
+foreground = "fg_trix_turn_around_crop"
 
 cap = cv2.VideoCapture("./foreground/" + foreground + '.mp4')
 b = cv2.VideoCapture("./background/" + background + '.mp4') 
-
-
 
 font                   = cv2.FONT_HERSHEY_SIMPLEX
 bottomLeftCornerOfText = (10,500)
@@ -16,8 +14,6 @@ fontScale              = 1
 fontColor              = (0,0,255)
 lineType               = 2
 flag                   = 0
-
-
 
 width = int(b.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(b.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -27,20 +23,19 @@ fourcc = cv2.VideoWriter_fourcc('X','V','I','D') # four-char-code
 frames_per_second = 20.0
 out = cv2.VideoWriter('./correct_chroma/result_' + foreground + '.avi', fourcc, frames_per_second, dimension)
 
-
-
 while(cap.isOpened()):
   ret, frame = cap.read()
   ret2, frame2 = b.read()
 
+  frame = cv2.resize(frame,(width,height))
   #Adjust niu to
-  #
+
   lower_green = np.array([40,60,60])
-  upper_green = np.array([75,255,255])
+  upper_green = np.array([90,255,255])
+
 
   hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) # convert input to gray scale
   mask = cv2.inRange(hsv, lower_green, upper_green)
-
 
   green = cv2.bitwise_and(frame,frame, mask = mask)
 
