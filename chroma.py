@@ -1,6 +1,7 @@
 import cv2
 import numpy as np 
 
+
 background = "trix_turn_around_long"
 foreground = "fg_trix_turn_around_crop"
 
@@ -20,7 +21,7 @@ dimension = (width,height)
 # define video codec for file saving
 fourcc = cv2.VideoWriter_fourcc('X','V','I','D') # four-char-code
 frames_per_second = 20.0
-out = cv2.VideoWriter('result_' + foreground + '.avi', fourcc, frames_per_second, dimension)
+out = cv2.VideoWriter('./correct_chroma/result_' + foreground + '.avi', fourcc, frames_per_second, dimension)
 
 while(cap.isOpened()):
   ret, frame = cap.read()
@@ -28,16 +29,16 @@ while(cap.isOpened()):
 
   frame = cv2.resize(frame,(width,height))
   #Adjust niu to
+
   lower_green = np.array([40,60,60])
   upper_green = np.array([90,255,255])
 
+
   hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV) # convert input to gray scale
   mask = cv2.inRange(hsv, lower_green, upper_green)
-  mask_inv = cv2.bitwise_not(mask)
-
-
 
   green = cv2.bitwise_and(frame,frame, mask = mask)
+
   green2 = cv2.bitwise_and(frame2,frame2, mask = mask)
   res = frame - green
   res = cv2.add(green2,res)
